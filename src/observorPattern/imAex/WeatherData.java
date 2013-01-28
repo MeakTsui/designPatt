@@ -27,17 +27,32 @@ public class WeatherData implements Subject{
     
     @Override
     public void regiterObserver(Observer o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        observers.add(o);
     }
 
     @Override
     public void removerObserver(Observer o) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        int i = observers.indexOf(o);
+        if(i>=0){
+            observers.remove(i);
+        }
     }
 
     @Override
     public void notifyObservers() {
-        throw new UnsupportedOperationException("Not supported yet.");
+        for(int i = 0;i<observers.size();i++){
+            Observer observer = (Observer)observers.get(i);
+            observer.update(temperature, humidity, pressure);
+        }
+    }
+    public void measurementsChanged(){
+        notifyObservers();
     }
     
+    public void setMeasurements(float temperature,float humidity,float pressure){
+        this.temperature = temperature;
+        this.humidity = humidity;
+        this.pressure = pressure;
+        measurementsChanged();
+    }
 }
